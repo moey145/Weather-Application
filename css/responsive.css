@@ -1,0 +1,346 @@
+/* Responsive design for compact layout */
+@media (max-width: 768px) {
+    .card {
+        max-width: 90%;
+        height: 82vh;
+        max-height: 700px;
+        padding: 16px;
+    }
+    
+    .temp {
+        font-size: 2rem;
+    }
+    
+    .weather-icon {
+        width: 75px;
+    }
+    
+    .details {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .card {
+        width: 95%;
+        height: 85vh;
+        max-height: 650px;
+        padding: 14px;
+    }
+    
+    .app-title {
+        font-size: 18px;
+    }
+    
+    .app-title i {
+        font-size: 20px;
+    }
+    
+    .temp {
+        font-size: 1.8rem;
+    }
+    
+    .weather-icon {
+        width: 70px;
+    }
+    
+    .details {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    
+    .col {
+        padding: 8px;
+    }
+    
+    .col i {
+        font-size: 14px;
+        width: 18px;
+        margin-right: 6px;
+    }
+    
+    .col-content p:first-child {
+        font-size: 12px;
+    }
+    
+    .weather-main {
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+
+    .search input {
+        height: 36px;
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+    
+    .search button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .search button img {
+        width: 12px;
+    }
+
+    .suggestions {
+        right: 45px;
+        max-height: 120px;
+    }
+    
+    .suggestions-list .suggestion-item {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .forecast-card {
+        min-width: 80px;
+        padding: 8px;
+    }
+
+    .forecast-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 380px) {
+    .card {
+        height: 88vh;
+        max-height: 600px;
+        padding: 12px;
+    }
+    
+    .app-title {
+        font-size: 16px;
+    }
+    
+    .app-title i {
+        font-size: 18px;
+    }
+    
+    .temp {
+        font-size: 1.6rem;
+    }
+    
+    .weather-icon {
+        width: 65px;
+    }
+
+    .search input {
+        height: 34px;
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .search button {
+        width: 34px;
+        height: 34px;
+    }
+
+    .search button img {
+        width: 10px;
+    }
+
+    .suggestions {
+        right: 40px;
+        max-height: 100px;
+    }
+    
+    .suggestions-list .suggestion-item {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .weather-actions {
+        gap: 8px;
+    }
+
+    .action-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+
+    .forecast-card {
+        min-width: 75px;
+        padding: 6px;
+    }
+
+    .forecast-icon {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-height: 700px) {
+    .card {
+        height: 88vh;
+        max-height: 580px;
+        padding: 12px;
+    }
+    
+    .app-header {
+        margin-bottom: 8px;
+    }
+    
+    .app-title {
+        font-size: 16px;
+    }
+    
+    .temp {
+        font-size: 1.8rem;
+    }
+    
+    .weather-icon {
+        width: 65px;
+    }
+    
+    .details {
+        margin: 10px 0;
+        gap: 6px;
+    }
+    
+    .suggestions {
+        max-height: 100px;
+    }
+    
+    .suggestions-list .suggestion-item {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    .forecast-section {
+        margin: 10px 0;
+        padding: 8px;
+    }
+
+    .weather-info {
+        margin-bottom: 10px;
+    }
+
+    .weather-main {
+        margin-bottom: 8px;
+    }
+}
+
+/* Extra compact for very small screens */
+@media (max-height: 600px) {
+    .card {
+        height: 92vh;
+        max-height: 500px;
+        padding: 10px;
+    }
+    
+    .app-header {
+        margin-bottom: 6px;
+    }
+    
+    .app-title {
+        font-size: 14px;
+    }
+    
+    .app-title i {
+        font-size: 16px;
+    }
+    
+    .temp {
+        font-size: 1.5rem;
+    }
+    
+    .weather-icon {
+        width: 55px;
+    }
+    
+    .weather-main {
+        gap: 12px;
+        margin-bottom: 6px;
+    }
+    
+    .details {
+        margin: 8px 0;
+        gap: 4px;
+    }
+    
+    .col {
+        padding: 6px;
+    }
+    
+    .forecast-section {
+        margin: 8px 0;
+        padding: 6px;
+    }
+    
+    .forecast-card {
+        min-width: 70px;
+        padding: 4px;
+    }
+    
+    .forecast-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Landscape mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+    .card {
+        height: 95vh;
+        max-height: 450px;
+        padding: 8px;
+    }
+    
+    .app-header {
+        margin-bottom: 4px;
+    }
+    
+    .app-title {
+        font-size: 12px;
+    }
+    
+    .app-title i {
+        font-size: 14px;
+    }
+    
+    .weather-main {
+        gap: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .temp {
+        font-size: 1.3rem;
+    }
+    
+    .weather-icon {
+        width: 45px;
+    }
+    
+    .details {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3px;
+        margin: 6px 0;
+    }
+    
+    .col {
+        padding: 4px;
+    }
+    
+    .forecast-section {
+        margin: 6px 0;
+        padding: 4px;
+    }
+    
+    .forecast-card {
+        min-width: 60px;
+        padding: 3px;
+    }
+    
+    .forecast-icon {
+        width: 18px;
+        height: 18px;
+    }
+}

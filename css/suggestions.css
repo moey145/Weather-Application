@@ -1,0 +1,83 @@
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 80px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 1000;
+    max-height: 250px;
+    overflow: hidden; /* Changed from overflow-y: auto */
+    margin-top: 5px;
+}
+
+.suggestions-list {
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    padding-right: 8px; /* Space for custom scrollbar */
+    margin-right: -8px; /* Pull back to align with container */
+}
+
+.suggestion-item {
+    padding: 16px 25px;
+    color: #555;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+    font-size: 16px;
+    font-weight: 400;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ... for long text */
+    word-break: break-word; /* Break long words if needed */
+}
+
+.suggestion-item:hover {
+    background-color: #f0f9ff;
+    color: #333;
+    transform: translateX(5px);
+}
+
+.suggestion-item:first-child {
+    border-radius: 20px 20px 0 0;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 20px 20px;
+}
+
+.suggestion-item:only-child {
+    border-radius: 20px;
+    border-bottom: none;
+}
+
+/* Custom scrollbar for suggestions - embedded within rounded container */
+.suggestions-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 0;
+    margin: 20px 0; /* Add margin to keep scrollbar within rounded corners */
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 1px solid transparent;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* For Firefox */
+.suggestions-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
