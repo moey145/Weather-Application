@@ -1,0 +1,192 @@
+/* Enhanced Weather Display */
+.weather {
+    display: none;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+/* Enhanced Weather Icon with Animations */
+.weather-icon {
+    width: 120px;
+    height: auto;
+    align-self: center;
+    transition: all 0.5s ease;
+}
+
+.temp-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.temp {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, #fff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    line-height: 1;
+}
+
+.feels-like {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-top: 5px;
+    font-weight: 300;
+}
+
+.weather-info {
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    text-transform: capitalize;
+}
+
+.city {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.last-updated {
+    font-size: 11px;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* Enhanced Details Grid */
+.details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.col {
+    display: flex;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 15px;
+    transition: var(--transition);
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.col:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.col i {
+    font-size: 20px;
+    margin-right: 12px;
+    color: #ffd700;
+    width: 25px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.col-content {
+    flex: 1;
+    text-align: left;
+}
+
+.col-content p:first-child {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.label {
+    font-size: 10px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), #00ff88);
+    transition: width 1s ease-out;
+}
+
+/* Enhanced sunrise/sunset display - make it consistent with other columns */
+.sunrise-sunset-display {
+    width: 100%;
+    margin-top: 6px;
+}
+
+.sunrise-sunset-times {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sunrise-sunset-times .time-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.sunrise-sunset-times .time-item i {
+    font-size: 12px;
+    opacity: 0.8;
+    color: #ffd700;
+    width: auto;
+    margin: 0;
+}
+
+.current-phase {
+    font-size: 10px;
+    opacity: 0.7;
+    font-style: italic;
+    margin-top: 4px;
+    text-align: left;
+    line-height: 1.2;
+}
+
+/* Ensure consistent spacing in all columns */
+.col-content > *:not(:last-child) {
+    margin-bottom: 3px;
+}

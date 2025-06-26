@@ -1,0 +1,224 @@
+/* App Header */
+.app-header {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.app-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0.9;
+}
+
+.app-title i {
+    font-size: 30px;
+    color: #ffd700;
+}
+
+/* Enhanced Search Section */
+.search {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1001;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 5px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search input {
+    border: 0;
+    outline: 0;
+    background: #ebfffc;
+    color: var(--text-dark);
+    padding: 12px 20px;
+    height: 50px;
+    border-radius: 25px;
+    flex: 1;
+    font-size: 16px;
+    transition: var(--transition);
+    font-weight: 400;
+}
+
+.search input::placeholder {
+    color: #999;
+    font-weight: 300;
+}
+
+.search button {
+    border: 0;
+    outline: 0;
+    background: linear-gradient(135deg, #00ff88, #00cc6a);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: var(--shadow-light);
+}
+
+.search button:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.search button:active {
+    transform: scale(0.95);
+}
+
+.search button img {
+    width: 16px;
+    filter: brightness(0) invert(1);
+}
+
+.loading-spinner {
+    position: absolute;
+    color: white;
+    font-size: 14px;
+}
+
+/* Status Messages */
+.status-messages {
+    margin-bottom: 15px;
+}
+
+.error, .loading {
+    display: none;
+    padding: 10px 16px;
+    border-radius: 15px;
+    margin: 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.error {
+    background: rgba(255, 68, 68, 0.15);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    color: #ff6b6b;
+    display: flex;
+}
+
+.loading {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-light);
+    display: flex;
+}
+
+.error i, .loading i {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.error p, .loading p {
+    margin: 0;
+    line-height: 1;
+}
+
+/* Weather Actions */
+.weather-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-light);
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(10px);
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.action-btn i {
+    font-size: 14px;
+}
+
+/* Day/Night Indicator */
+.day-night-indicator {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.day-night-indicator i {
+    font-size: 14px;
+}
+
+.day-night-indicator.day {
+    color: #FFD700;
+}
+
+.day-night-indicator.night {
+    color: #B0C4DE;
+}
+
+.day-night-indicator.twilight {
+    color: #DDA0DD;
+}
+
+/* Sun/Moon Animation */
+.sun-moon-animation {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.5s ease;
+}
+
+.sun-moon-animation.sun {
+    background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    animation: sunGlow 2s ease-in-out infinite alternate;
+}
+
+.sun-moon-animation.moon {
+    background: radial-gradient(circle, #F5F5DC 0%, #D3D3D3 100%);
+    box-shadow: 0 0 8px rgba(245, 245, 220, 0.3);
+    animation: moonGlow 3s ease-in-out infinite alternate;
+}

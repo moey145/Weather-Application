@@ -1,0 +1,75 @@
+:root {
+    --primary-color: #00feba;
+    --secondary-color: #5b548a;
+    --background-dark: #222;
+    --text-light: #fff;
+    --text-dark: #555;
+    --error-color: #ff4444;
+    --success-color: #00ff88;
+    --border-radius: 25px;
+    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.4);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Day/Night specific colors */
+    --day-bg-start: #87CEEB;
+    --day-bg-end: #98D8E8;
+    --day-card-bg: rgba(255, 255, 255, 0.95);
+    --day-text: #333;
+    --day-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    
+    --night-bg-start: #0F1419;
+    --night-bg-end: #1A1F29;
+    --night-card-bg: rgba(20, 25, 35, 0.95);
+    --night-text: #fff;
+    --night-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, var(--background-dark) 0%, #333 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    overflow-x: hidden;
+    position: relative;
+    transition: background 1s ease, color 0.5s ease;
+}
+
+.card {
+    width: 100%;
+    max-width: 950px;
+    min-height: 90vh;
+    max-height: 95vh;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-light);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    text-align: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: var(--shadow-heavy);
+    position: relative;
+    backdrop-filter: blur(15px);
+    animation: slideIn 0.8s ease-out;
+    transition: background 0.8s ease, box-shadow 0.8s ease, color 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

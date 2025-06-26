@@ -245,7 +245,7 @@ updateWeatherData(data, forecastData = null, hourlyData = null) {
         // Enhanced icon mapping with day/night variants
         const iconMap = {
             'Clouds': 'clouds.png',
-            'Clear': theme === 'night' || theme === 'twilight' ? 'clear-night.png' : 'clear.png',
+            'Clear': 'clear.png',
             'Rain': 'rain.png',
             'Drizzle': 'drizzle.png',
             'Mist': 'mist.png',

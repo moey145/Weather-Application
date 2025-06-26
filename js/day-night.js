@@ -36,8 +36,8 @@ class DayNightManager {
     }
 
     /**
-     * Get the current phase of the day
-     * @returns {string} Phase description
+     * Get the current phase of the day with time display for afternoon/evening
+     * @returns {string} Phase description or current time
      */
     getCurrentPhase() {
         if (!this.sunriseTime || !this.sunsetTime) return '';
@@ -58,14 +58,29 @@ class DayNightManager {
         } else if (localNow < localSunrise + (2 * 60 * 60)) { // 2 hours after sunrise
             return 'Morning';
         } else if (localNow < localSunset - (2 * 60 * 60)) { // 2 hours before sunset
-            return 'Afternoon';
+            // Display current time for afternoon
+            return this.formatCurrentTime();
         } else if (localNow < localSunset) {
-            return 'Evening';
+            // Display current time for evening
+            return this.formatCurrentTime();
         } else if (localNow < dusk) {
             return 'Dusk';
         } else {
             return 'Night';
         }
+    }
+
+    /**
+     * Format current time in AM/PM format
+     * @returns {string} Current time in AM/PM format
+     */
+    formatCurrentTime() {
+        const now = new Date();
+        return now.toLocaleTimeString([], { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
     }
 
     /**

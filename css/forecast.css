@@ -1,0 +1,411 @@
+/* Hourly Forecast Section - Made Bigger */
+.hourly-section {
+    margin: 20px 0;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hourly-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hourly-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 12px 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.hourly-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.hourly-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.hourly-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.hourly-card {
+    min-width: 90px;
+    max-width: 90px;
+    padding: 15px 12px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 15px;
+    text-align: center;
+    transition: var(--transition);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    flex-shrink: 0;
+}
+
+/* Dark borders for ALL day theme hourly cards */
+body.day-theme .hourly-card {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Dark text for ALL day theme weather - not just sunny */
+body.day-theme .hourly-time,
+body.day-theme .hourly-temp,
+body.day-theme .hourly-desc,
+body.day-theme .hourly-detail {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+body.day-theme .hourly-detail {
+    opacity: 0.7;
+}
+
+/* Weather-based hover colors */
+.hourly-card:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Sunny weather hover */
+body.sunny .hourly-card:hover {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.4);
+}
+
+/* Cloudy weather hover */
+body.cloudy .hourly-card:hover {
+    background: rgba(176, 196, 222, 0.2);
+    border: 2px solid rgba(176, 196, 222, 0.4);
+}
+
+/* Rainy weather hover */
+body.rainy .hourly-card:hover {
+    background: rgba(70, 130, 180, 0.2);
+    border: 2px solid rgba(70, 130, 180, 0.4);
+}
+
+/* Snowy weather hover */
+body.snowy .hourly-card:hover {
+    background: rgba(240, 248, 255, 0.2);
+    border: 2px solid rgba(240, 248, 255, 0.4);
+}
+
+/* Stormy weather hover */
+body.stormy .hourly-card:hover {
+    background: rgba(75, 75, 75, 0.2);
+    border: 2px solid rgba(75, 75, 75, 0.4);
+}
+
+/* Day theme hover adjustments */
+body.day-theme .hourly-card:hover {
+    background: rgba(135, 206, 235, 0.3);
+    border: 2px solid rgba(135, 206, 235, 0.5);
+}
+
+body.day-theme.sunny .hourly-card:hover {
+    background: rgba(255, 215, 0, 0.3);
+    border: 2px solid rgba(255, 140, 0, 0.6);
+}
+
+body.day-theme.cloudy .hourly-card:hover {
+    background: rgba(119, 136, 153, 0.3);
+    border: 2px solid rgba(119, 136, 153, 0.5);
+}
+
+body.day-theme.rainy .hourly-card:hover {
+    background: rgba(70, 130, 180, 0.3);
+    border: 2px solid rgba(70, 130, 180, 0.5);
+}
+
+/* Night theme hover adjustments */
+body.night-theme .hourly-card:hover {
+    background: rgba(26, 31, 41, 0.3);
+    border: 2px solid rgba(26, 31, 41, 0.5);
+}
+
+body.night-theme.clear .hourly-card:hover {
+    background: rgba(42, 54, 93, 0.3);
+    border: 2px solid rgba(42, 54, 93, 0.5);
+}
+
+.hourly-time {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Current hour text styling - no special green color */
+.hourly-time.current {
+    color: rgba(255, 255, 255, 1);
+    font-weight: 600;
+}
+
+/* Current hour text for day theme */
+body.day-theme .hourly-time.current {
+    color: rgba(0, 0, 0, 0.9);
+    font-weight: 600;
+}
+
+.hourly-icon {
+    width: 35px;
+    height: 35px;
+    margin: 6px auto;
+    transition: transform 0.3s ease;
+}
+
+.hourly-card:hover .hourly-icon {
+    transform: scale(1.1);
+}
+
+.hourly-temp {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 6px 0 4px 0;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.hourly-desc {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+    line-height: 1.2;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hourly-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 6px;
+}
+
+.hourly-detail {
+    font-size: 9px;
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.hourly-detail i {
+    font-size: 8px;
+    width: 10px;
+    text-align: center;
+}
+
+/* Daily Forecast Section */
+.forecast-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.forecast-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.forecast-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.forecast-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.forecast-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.forecast-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.forecast-card {
+    min-width: 120px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    text-align: center;
+    transition: var(--transition);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark borders for ALL day theme forecast cards */
+body.day-theme .forecast-card {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.8);
+}
+
+/* Weather-based forecast card hover colors */
+.forecast-card:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Sunny weather forecast hover */
+body.sunny .forecast-card:hover {
+    background: rgba(255, 215, 0, 0.25);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+}
+
+/* Cloudy weather forecast hover */
+body.cloudy .forecast-card:hover {
+    background: rgba(176, 196, 222, 0.25);
+    border: 2px solid rgba(176, 196, 222, 0.5);
+}
+
+/* Rainy weather forecast hover */
+body.rainy .forecast-card:hover {
+    background: rgba(70, 130, 180, 0.25);
+    border: 2px solid rgba(70, 130, 180, 0.5);
+}
+
+/* Snowy weather forecast hover */
+body.snowy .forecast-card:hover {
+    background: rgba(240, 248, 255, 0.25);
+    border: 2px solid rgba(240, 248, 255, 0.5);
+}
+
+/* Stormy weather forecast hover */
+body.stormy .forecast-card:hover {
+    background: rgba(75, 75, 75, 0.25);
+    border: 2px solid rgba(75, 75, 75, 0.5);
+}
+
+/* Day theme forecast hover adjustments */
+body.day-theme .forecast-card:hover {
+    background: rgba(135, 206, 235, 0.35);
+    border: 2px solid rgba(135, 206, 235, 0.6);
+}
+
+body.day-theme.sunny .forecast-card:hover {
+    background: rgba(255, 215, 0, 0.35);
+    border: 2px solid rgba(255, 140, 0, 0.7);
+}
+
+body.day-theme.cloudy .forecast-card:hover {
+    background: rgba(119, 136, 153, 0.35);
+    border: 2px solid rgba(119, 136, 153, 0.6);
+}
+
+body.day-theme.rainy .forecast-card:hover {
+    background: rgba(70, 130, 180, 0.35);
+    border: 2px solid rgba(70, 130, 180, 0.6);
+}
+
+/* Night theme forecast hover adjustments */
+body.night-theme .forecast-card:hover {
+    background: rgba(26, 31, 41, 0.35);
+    border: 2px solid rgba(26, 31, 41, 0.6);
+}
+
+body.night-theme.clear .forecast-card:hover {
+    background: rgba(42, 54, 93, 0.35);
+    border: 2px solid rgba(42, 54, 93, 0.6);
+}
+
+.forecast-day {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.forecast-date {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+
+.forecast-icon {
+    width: 40px;
+    height: 40px;
+    margin: 5px auto;
+    transition: transform 0.3s ease;
+}
+
+.forecast-card:hover .forecast-icon {
+    transform: scale(1.1);
+}
+
+.forecast-temps {
+    margin-top: 8px;
+}
+
+.forecast-high {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.forecast-low {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.forecast-desc {
+    font-size: 10px;
+    opacity: 0.8;
+    margin-top: 5px;
+    text-transform: capitalize;
+}
+
+.forecast-estimate {
+    font-size: 8px;
+    opacity: 0.6;
+    margin-top: 3px;
+}
+
+.forecast-estimated {
+    opacity: 0.8;
+    border-style: dashed;
+}
+
+.forecast-note {
+    margin-top: 10px;
+    font-size: 10px;
+    opacity: 0.7;
+    text-align: center;
+}
