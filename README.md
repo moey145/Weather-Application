@@ -25,12 +25,6 @@ A modern, responsive weather application that provides real-time weather informa
 - **Accessibility**: ARIA labels and keyboard navigation support
 - **Error Handling**: Graceful error management with user-friendly messages
 
-## 🚀 Demo
-
-![Weather App Screenshot](https://via.placeholder.com/800x600?text=Weather+App+Screenshot)
-
-*Note: Add actual screenshots of your application*
-
 ## 🛠️ Technologies Used
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
@@ -166,7 +160,7 @@ The application is fully responsive with breakpoints for:
 - **Geolocation**: One-click access to local weather
 - **Error Handling**: Clear messages for invalid locations
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [OpenWeatherMap](https://openweathermap.org/) for the weather API
 - [Font Awesome](https://fontawesome.com/) for the icons
