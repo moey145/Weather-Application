@@ -258,85 +258,259 @@ updateWeatherData(data, forecastData = null, hourlyData = null) {
         return iconMap[condition] || (theme === 'night' || theme === 'twilight' ? 'clear-night.png' : 'clear.png');
     }
 
-    updateForecast(forecastData) {
-        let forecastSection = document.querySelector('.forecast-section');
+  updateHourlyForecast(hourlyData) {
+    let hourlySection = document.querySelector('.hourly-section');
+    
+    if (!hourlySection) {
+        // Create hourly section
+        hourlySection = document.createElement('div');
+        hourlySection.className = 'hourly-section';
+        hourlySection.innerHTML = `
+            <div class="hourly-title">
+                <i class="fas fa-clock"></i>
+                24-Hour Forecast
+            </div>
+            <div class="hourly-container"></div>
+        `;
         
-        if (!forecastSection) {
-            // Create forecast section
-            forecastSection = document.createElement('div');
-            forecastSection.className = 'forecast-section';
-            forecastSection.innerHTML = `
-                <div class="forecast-title">
-                    <i class="fas fa-calendar-alt"></i>
-                    10-Day Forecast
+        // Insert DIRECTLY after weather-info section (BEFORE 10-day forecast)
+        const weatherInfo = document.querySelector('.weather-info');
+        if (weatherInfo) {
+            weatherInfo.insertAdjacentElement('afterend', hourlySection);
+        }
+    }
+
+    const hourlyContainer = hourlySection.querySelector('.hourly-container');
+    if (!hourlyContainer) return;
+
+    // Process hourly data - generate 24 individual hours
+    const hourlyForecasts = this.generateHourlyData(hourlyData.list);
+    
+    hourlyContainer.innerHTML = '';
+    
+    hourlyForecasts.slice(0, 24).forEach((hour, index) => {
+        const hourlyCard = document.createElement('div');
+        hourlyCard.className = 'hourly-card';
+        
+        const date = new Date(hour.dt * 1000);
+        const isCurrentHour = index === 0;
+        
+        if (isCurrentHour) {
+            hourlyCard.classList.add('current');
+        }
+        
+        const timeString = isCurrentHour ? 'Now' : 
+                          date.toLocaleTimeString([], { 
+                              hour: 'numeric', 
+                              hour12: true 
+                          }).toLowerCase();
+        
+        const iconName = this.getWeatherIconName(hour.weather[0].main, this.getHourTheme(date));
+        
+        hourlyCard.innerHTML = `
+            <div class="hourly-time ${isCurrentHour ? 'current' : ''}">${timeString}</div>
+            <img src="images/${iconName}" 
+                 alt="${hour.weather[0].description}" 
+                 class="hourly-icon">
+            <div class="hourly-temp">${Math.round(hour.main.temp)}°</div>
+            <div class="hourly-desc">${hour.weather[0].description}</div>
+            <div class="hourly-details">
+                <div class="hourly-detail">
+                    <i class="fas fa-tint"></i>
+                    <span>${hour.main.humidity}%</span>
                 </div>
-                <div class="forecast-container"></div>
-                <div class="forecast-note" style="display: none;">
-                    <p><i class="fas fa-info-circle"></i> * Days 6-10 are extended forecasts based on weather trends</p>
+                <div class="hourly-detail">
+                    <i class="fas fa-wind"></i>
+                    <span>${Math.round(hour.wind.speed * 3.6)}</span>
                 </div>
-            `;
-            
-            // Insert after weather-info section
+            </div>
+        `;
+        
+        hourlyContainer.appendChild(hourlyCard);
+    });
+}
+
+// Replace the processHourlyData method with this new one:
+generateHourlyData(hourlyList) {
+    const hourlyData = [];
+    const now = new Date();
+    
+    // Start from the current hour
+    const currentHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours());
+    
+    // Generate 24 hours of data
+    for (let i = 0; i < 24; i++) {
+        const targetTime = new Date(currentHour.getTime() + (i * 60 * 60 * 1000)); // Add i hours
+        const targetTimestamp = Math.floor(targetTime.getTime() / 1000);
+        
+        // Find the closest forecast entry
+        let closestForecast = hourlyList[0];
+        let minDiff = Math.abs(hourlyList[0].dt - targetTimestamp);
+        
+        for (const forecast of hourlyList) {
+            const diff = Math.abs(forecast.dt - targetTimestamp);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestForecast = forecast;
+            }
+        }
+        
+        // Interpolate data if needed
+        const interpolatedData = this.interpolateWeatherData(hourlyList, targetTimestamp);
+        
+        hourlyData.push({
+            dt: targetTimestamp,
+            main: {
+                temp: interpolatedData.temp,
+                humidity: interpolatedData.humidity
+            },
+            weather: [{
+                main: closestForecast.weather[0].main,
+                description: closestForecast.weather[0].description
+            }],
+            wind: {
+                speed: interpolatedData.windSpeed
+            }
+        });
+    }
+    
+    return hourlyData;
+}
+
+// Add this new method for interpolating weather data:
+interpolateWeatherData(hourlyList, targetTimestamp) {
+    // Find the two closest forecast points
+    let before = null;
+    let after = null;
+    
+    for (let i = 0; i < hourlyList.length - 1; i++) {
+        if (hourlyList[i].dt <= targetTimestamp && hourlyList[i + 1].dt >= targetTimestamp) {
+            before = hourlyList[i];
+            after = hourlyList[i + 1];
+            break;
+        }
+    }
+    
+    // If we can't find surrounding points, use the closest one
+    if (!before || !after) {
+        const closest = hourlyList.reduce((prev, curr) => 
+            Math.abs(curr.dt - targetTimestamp) < Math.abs(prev.dt - targetTimestamp) ? curr : prev
+        );
+        
+        return {
+            temp: closest.main.temp,
+            humidity: closest.main.humidity,
+            windSpeed: closest.wind.speed
+        };
+    }
+    
+    // Calculate interpolation factor (0 to 1)
+    const factor = (targetTimestamp - before.dt) / (after.dt - before.dt);
+    
+    // Interpolate values
+    return {
+        temp: before.main.temp + (after.main.temp - before.main.temp) * factor,
+        humidity: Math.round(before.main.humidity + (after.main.humidity - before.main.humidity) * factor),
+        windSpeed: before.wind.speed + (after.wind.speed - before.wind.speed) * factor
+    };
+}
+
+getHourTheme(date) {
+    // Simple day/night determination based on hour
+    const hour = date.getHours();
+    if (hour >= 6 && hour < 18) {
+        return 'day';
+    } else if (hour >= 18 && hour < 20) {
+        return 'twilight';
+    } else {
+        return 'night';
+    }
+}
+    updateForecast(forecastData) {
+    let forecastSection = document.querySelector('.forecast-section');
+    
+    if (!forecastSection) {
+        // Create forecast section
+        forecastSection = document.createElement('div');
+        forecastSection.className = 'forecast-section';
+        forecastSection.innerHTML = `
+            <div class="forecast-title">
+                <i class="fas fa-calendar-alt"></i>
+                10-Day Forecast
+            </div>
+            <div class="forecast-container"></div>
+            <div class="forecast-note" style="display: none;">
+                <p><i class="fas fa-info-circle"></i> * Days 6-10 are extended forecasts based on weather trends</p>
+            </div>
+        `;
+        
+        // Insert AFTER the hourly forecast section
+        const hourlySection = document.querySelector('.hourly-section');
+        if (hourlySection) {
+            hourlySection.insertAdjacentElement('afterend', forecastSection);
+        } else {
+            // Fallback: insert after weather-info if hourly section doesn't exist yet
             const weatherInfo = document.querySelector('.weather-info');
             if (weatherInfo) {
                 weatherInfo.insertAdjacentElement('afterend', forecastSection);
             }
         }
-
-        const forecastContainer = forecastSection.querySelector('.forecast-container');
-        const forecastNote = forecastSection.querySelector('.forecast-note');
-        if (!forecastContainer) return;
-
-        // Process forecast data - get one entry per day
-        const dailyForecasts = this.processForecastData(forecastData.list);
-        
-        // Generate additional forecast days if we have less than 10 days
-        const extendedForecast = this.extendForecastTo10Days(dailyForecasts, forecastData);
-        
-        forecastContainer.innerHTML = '';
-        
-        extendedForecast.slice(0, 10).forEach((forecast, index) => {
-            const forecastCard = document.createElement('div');
-            forecastCard.className = 'forecast-card';
-            
-            const date = new Date(forecast.dt * 1000);
-            const dayName = index === 0 ? 'Today' : 
-                           index === 1 ? 'Tomorrow' : 
-                           date.toLocaleDateString('en', { weekday: 'short' });
-            const dateStr = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
-            
-            // Add indicator if this is extrapolated data
-            const isExtrapolated = index >= dailyForecasts.length;
-            
-            if (isExtrapolated) {
-                forecastCard.classList.add('forecast-estimated');
-                forecastCard.title = 'Extended forecast based on weather trends';
-            }
-            
-            forecastCard.innerHTML = `
-                <div class="forecast-day">${dayName}</div>
-                <div class="forecast-date">${dateStr}</div>
-                <img src="images/${this.getWeatherIconName(forecast.weather[0].main)}" 
-                     alt="${forecast.weather[0].description}" 
-                     class="forecast-icon">
-                <div class="forecast-temps">
-                    <div class="forecast-high">${Math.round(forecast.main.temp_max)}°</div>
-                    <div class="forecast-low">${Math.round(forecast.main.temp_min)}°</div>
-                </div>
-                <div class="forecast-desc">${forecast.weather[0].description}</div>
-                ${isExtrapolated ? '<div class="forecast-estimate">*</div>' : ''}
-            `;
-            
-            forecastContainer.appendChild(forecastCard);
-        });
-        
-        // Show/hide note about extended forecast
-        if (extendedForecast.length > dailyForecasts.length && forecastNote) {
-            forecastNote.style.display = 'block';
-        } else if (forecastNote) {
-            forecastNote.style.display = 'none';
-        }
     }
+
+    const forecastContainer = forecastSection.querySelector('.forecast-container');
+    const forecastNote = forecastSection.querySelector('.forecast-note');
+    if (!forecastContainer) return;
+
+    // Process forecast data - get one entry per day
+    const dailyForecasts = this.processForecastData(forecastData.list);
+    
+    // Generate additional forecast days if we have less than 10 days
+    const extendedForecast = this.extendForecastTo10Days(dailyForecasts, forecastData);
+    
+    forecastContainer.innerHTML = '';
+    
+    extendedForecast.slice(0, 10).forEach((forecast, index) => {
+        const forecastCard = document.createElement('div');
+        forecastCard.className = 'forecast-card';
+        
+        const date = new Date(forecast.dt * 1000);
+        const dayName = index === 0 ? 'Today' : 
+                       index === 1 ? 'Tomorrow' : 
+                       date.toLocaleDateString('en', { weekday: 'short' });
+        const dateStr = date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+        
+        // Add indicator if this is extrapolated data
+        const isExtrapolated = index >= dailyForecasts.length;
+        
+        if (isExtrapolated) {
+            forecastCard.classList.add('forecast-estimated');
+            forecastCard.title = 'Extended forecast based on weather trends';
+        }
+        
+        forecastCard.innerHTML = `
+            <div class="forecast-day">${dayName}</div>
+            <div class="forecast-date">${dateStr}</div>
+            <img src="images/${this.getWeatherIconName(forecast.weather[0].main)}" 
+                 alt="${forecast.weather[0].description}" 
+                 class="forecast-icon">
+            <div class="forecast-temps">
+                <div class="forecast-high">${Math.round(forecast.main.temp_max)}°</div>
+                <div class="forecast-low">${Math.round(forecast.main.temp_min)}°</div>
+            </div>
+            <div class="forecast-desc">${forecast.weather[0].description}</div>
+            ${isExtrapolated ? '<div class="forecast-estimate">*</div>' : ''}
+        `;
+        
+        forecastContainer.appendChild(forecastCard);
+    });
+    
+    // Show/hide note about extended forecast
+    if (extendedForecast.length > dailyForecasts.length && forecastNote) {
+        forecastNote.style.display = 'block';
+    } else if (forecastNote) {
+        forecastNote.style.display = 'none';
+    }
+}
 
     extendForecastTo10Days(existingForecast, originalData) {
         const extended = [...existingForecast];
@@ -488,99 +662,29 @@ updateWeatherData(data, forecastData = null, hourlyData = null) {
         }
     }
 
+// Add this method to the UIManager class
 
-    // Add these methods at the end of the UIManager class (before the closing bracket)
+updateLocationTime() {
+    const dateTime = dayNightManager.getLocationDateTime();
+    if (!dateTime) return;
 
-updateHourlyForecast(hourlyData) {
-    let hourlySection = document.querySelector('.hourly-section');
-    
-    if (!hourlySection) {
-        // Create hourly section
-        hourlySection = document.createElement('div');
-        hourlySection.className = 'hourly-section';
-        hourlySection.innerHTML = `
-            <div class="hourly-title">
-                <i class="fas fa-clock"></i>
-                24-Hour Forecast
-            </div>
-            <div class="hourly-container"></div>
-        `;
+    // Find or create location time display
+    let timeDisplay = document.querySelector('.location-time');
+    if (!timeDisplay) {
+        timeDisplay = document.createElement('div');
+        timeDisplay.className = 'location-time';
         
-        // Insert after weather-info section but before daily forecast
-        const weatherInfo = document.querySelector('.weather-info');
-        const forecastSection = document.querySelector('.forecast-section');
-        
-        if (forecastSection) {
-            forecastSection.insertAdjacentElement('beforebegin', hourlySection);
-        } else if (weatherInfo) {
-            weatherInfo.insertAdjacentElement('afterend', hourlySection);
+        // Insert after the city name
+        const cityElement = document.querySelector('.city');
+        if (cityElement) {
+            cityElement.insertAdjacentElement('afterend', timeDisplay);
         }
     }
 
-    const hourlyContainer = hourlySection.querySelector('.hourly-container');
-    if (!hourlyContainer) return;
-
-    // Process hourly data - get next 24 hours (8 * 3-hour intervals)
-    const hourlyForecasts = this.processHourlyData(hourlyData.list);
-    
-    hourlyContainer.innerHTML = '';
-    
-    hourlyForecasts.slice(0, 8).forEach((hour, index) => {
-        const hourlyCard = document.createElement('div');
-        hourlyCard.className = 'hourly-card';
-        
-        const date = new Date(hour.dt * 1000);
-        const isCurrentHour = index === 0;
-        
-        if (isCurrentHour) {
-            hourlyCard.classList.add('current');
-        }
-        
-        const timeString = isCurrentHour ? 'Now' : 
-                          date.toLocaleTimeString([], { 
-                              hour: 'numeric', 
-                              hour12: true 
-                          }).toLowerCase();
-        
-        const iconName = this.getWeatherIconName(hour.weather[0].main, this.getHourTheme(date));
-        
-        hourlyCard.innerHTML = `
-            <div class="hourly-time ${isCurrentHour ? 'current' : ''}">${timeString}</div>
-            <img src="images/${iconName}" 
-                 alt="${hour.weather[0].description}" 
-                 class="hourly-icon">
-            <div class="hourly-temp">${Math.round(hour.main.temp)}°</div>
-            <div class="hourly-desc">${hour.weather[0].description}</div>
-            <div class="hourly-details">
-                <div class="hourly-detail">
-                    <i class="fas fa-tint"></i>
-                    <span>${hour.main.humidity}%</span>
-                </div>
-                <div class="hourly-detail">
-                    <i class="fas fa-wind"></i>
-                    <span>${Math.round(hour.wind.speed * 3.6)}</span>
-                </div>
-            </div>
-        `;
-        
-        hourlyContainer.appendChild(hourlyCard);
-    });
-}
-
-processHourlyData(hourlyList) {
-    // Return next 8 entries (24 hours in 3-hour intervals)
-    return hourlyList.slice(0, 8);
-}
-
-getHourTheme(date) {
-    // Simple day/night determination based on hour
-    const hour = date.getHours();
-    if (hour >= 6 && hour < 18) {
-        return 'day';
-    } else if (hour >= 18 && hour < 20) {
-        return 'twilight';
-    } else {
-        return 'night';
-    }
+    timeDisplay.innerHTML = `
+        <i class="fas fa-clock"></i>
+        <span class="local-time">${dateTime.time}</span>
+        <span class="local-date">${dateTime.shortDate}</span>
+    `;
 }
 }

@@ -6,7 +6,7 @@
     --text-dark: #555;
     --error-color: #ff4444;
     --success-color: #00ff88;
-    --border-radius: 25px;
+    --border-radius: 10px;
     --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.1);
     --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.4);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -73,3 +73,111 @@ body {
         transform: translateY(0);
     }
 }
+
+/* Custom Scrollbar Styles */
+.card {
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+.card::-webkit-scrollbar {
+    width: 8px;
+}
+
+.card::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.card::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: all 0.3s ease;
+}
+
+.card::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+    background-clip: content-box;
+}
+
+/* Hide scrollbar when not scrolling */
+.card::-webkit-scrollbar-thumb {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+}
+
+/* Day theme scrollbar */
+.day-theme .card::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.day-theme .card::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.day-theme .card {
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+/* Night theme scrollbar */
+.night-theme .card::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.night-theme .card::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.night-theme .card {
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* Smooth scrolling behavior */
+.card {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced scrollbar visibility on scroll */
+.card.scrolling::-webkit-scrollbar-thumb {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.day-theme .card.scrolling::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.night-theme .card.scrolling::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive scrollbar adjustments */
+@media (max-width: 768px) {
+    .card::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .card::-webkit-scrollbar-thumb {
+        border: 1px solid transparent;
+    }
+}
+
+@media (max-width: 480px) {
+    .card::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .card::-webkit-scrollbar-thumb {
+        border: none;
+        border-radius: 6px;
+    }
+}
+

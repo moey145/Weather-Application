@@ -36,8 +36,8 @@ class DayNightManager {
     }
 
     /**
-     * Get the current phase of the day with time display for afternoon/evening
-     * @returns {string} Phase description or current time
+     * Get the current phase of the day - simplified without time display
+     * @returns {string} Phase description only
      */
     getCurrentPhase() {
         if (!this.sunriseTime || !this.sunsetTime) return '';
@@ -58,29 +58,14 @@ class DayNightManager {
         } else if (localNow < localSunrise + (2 * 60 * 60)) { // 2 hours after sunrise
             return 'Morning';
         } else if (localNow < localSunset - (2 * 60 * 60)) { // 2 hours before sunset
-            // Display current time for afternoon
-            return this.formatCurrentTime();
+            return 'Afternoon';
         } else if (localNow < localSunset) {
-            // Display current time for evening
-            return this.formatCurrentTime();
+            return 'Evening';
         } else if (localNow < dusk) {
             return 'Dusk';
         } else {
             return 'Night';
         }
-    }
-
-    /**
-     * Format current time in AM/PM format
-     * @returns {string} Current time in AM/PM format
-     */
-    formatCurrentTime() {
-        const now = new Date();
-        return now.toLocaleTimeString([], { 
-            hour: 'numeric', 
-            minute: '2-digit',
-            hour12: true 
-        });
     }
 
     /**
@@ -115,7 +100,8 @@ class DayNightManager {
             }
         }
 
-        this.updateDayNightIndicator(status);
+        // Remove the day/night indicator completely
+        // this.updateDayNightIndicator(status);
     }
 
     /**
@@ -139,53 +125,13 @@ class DayNightManager {
     }
 
     /**
-     * Create or update the day/night indicator
-     * @param {string} status - Current day/night status
+     * Remove any existing day/night indicators
      */
-    updateDayNightIndicator(status) {
-        let indicator = document.querySelector('.day-night-indicator');
-        
-        if (!indicator) {
-            indicator = document.createElement('div');
-            indicator.className = 'day-night-indicator';
-            
-            // Insert into the card header
-            const header = document.querySelector('.app-header');
-            if (header) {
-                header.appendChild(indicator);
-            } else {
-                // Fallback: insert into card
-                const card = document.querySelector('.card');
-                if (card) {
-                    card.appendChild(indicator);
-                }
-            }
+    removeDayNightIndicator() {
+        const indicator = document.querySelector('.day-night-indicator');
+        if (indicator) {
+            indicator.remove();
         }
-
-        // Update content based on status
-        const phase = this.getCurrentPhase();
-        let icon, text, className;
-
-        if (status === 'day') {
-            icon = 'fas fa-sun';
-            text = phase || 'Day';
-            className = 'day';
-        } else if (status === 'twilight') {
-            icon = 'fas fa-cloud-sun';
-            text = phase || 'Twilight';
-            className = 'twilight';
-        } else {
-            icon = 'fas fa-moon';
-            text = phase || 'Night';
-            className = 'night';
-        }
-
-        indicator.className = `day-night-indicator ${className}`;
-        indicator.innerHTML = `
-            <i class="${icon}"></i>
-            <span>${text}</span>
-            <div class="sun-moon-animation ${status === 'day' ? 'sun' : 'moon'}"></div>
-        `;
     }
 
     /**
