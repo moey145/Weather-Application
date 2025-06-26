@@ -35,7 +35,7 @@ A modern, responsive weather application that provides real-time weather informa
 
 ## 📦 Installation
 
-1. **Clone the repository**
+**Clone the repository**
    ```bash
    git clone https://github.com/yourusername/Weather-Application.git
    cd Weather-Application
@@ -45,14 +45,26 @@ A modern, responsive weather application that provides real-time weather informa
    - Visit [OpenWeatherMap](https://openweathermap.org/api)
    - Sign up and get your free API key
 
-3. **Configure API Key**
-   - Open `js/config.js`
-   - Replace the API key with your own:
+3. **Create Configuration File**
+   - Create a new file: `js/config.js`
+   - Add the following configuration with your API key:
    ```javascript
    const CONFIG = {
        API: {
-           KEY: "your_api_key_here",
-           // ... other config
+           KEY: "your_api_key_here", // Replace with your actual API key
+           BASE_URL: "https://api.openweathermap.org/data/2.5",
+           GEO_URL: "https://api.openweathermap.org/geo/1.0",
+           UNITS: "metric",
+           LANGUAGE: "en"
+       },
+       CACHE: {
+           DURATION: 10 * 60 * 1000, // 10 minutes
+           MAX_SIZE: 50
+       },
+       UI: {
+           DEBOUNCE_DELAY: 300,
+           MAX_SUGGESTIONS: 5,
+           ANIMATION_DURATION: 300
        }
    };
    ```
@@ -67,6 +79,12 @@ A modern, responsive weather application that provides real-time weather informa
    # Using Node.js (with live-server)
    npx live-server
    ```
+
+## ⚠️ Important Notes
+
+- The `js/config.js` file is not included in the repository for security reasons
+- Make sure to replace `"your_api_key_here"` with your actual OpenWeatherMap API key
+- Keep your API key private and never commit it to version control
 
 ## 🏗️ Project Structure
 
@@ -95,30 +113,6 @@ Weather-Application/
 │   └── suggestions.js      # Search suggestions
 ├── images/                 # Weather icons and assets
 └── README.md
-```
-
-## 🔧 Configuration
-
-### API Configuration (`js/config.js`)
-```javascript
-const CONFIG = {
-    API: {
-        KEY: "your_api_key",
-        BASE_URL: "https://api.openweathermap.org/data/2.5",
-        GEO_URL: "https://api.openweathermap.org/geo/1.0",
-        UNITS: "metric",
-        LANGUAGE: "en"
-    },
-    CACHE: {
-        DURATION: 10 * 60 * 1000, // 10 minutes
-        MAX_SIZE: 50
-    },
-    UI: {
-        DEBOUNCE_DELAY: 300,
-        MAX_SUGGESTIONS: 5,
-        ANIMATION_DURATION: 300
-    }
-};
 ```
 
 ## 🎨 Themes
