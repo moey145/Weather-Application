@@ -344,3 +344,71 @@
         height: 18px;
     }
 }
+
+/* Add this at the end of the file */
+
+/* Responsive adjustments for hourly forecast */
+@media (max-width: 768px) {
+    .hourly-section {
+        margin: 12px 0;
+        padding: 12px;
+    }
+    
+    .hourly-card {
+        min-width: 65px;
+        max-width: 65px;
+        padding: 8px 6px;
+    }
+    
+    .hourly-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hourly-section {
+        margin: 10px 0;
+        padding: 10px;
+    }
+    
+    .hourly-card {
+        min-width: 60px;
+        max-width: 60px;
+        padding: 6px 4px;
+    }
+    
+    .hourly-icon {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .hourly-temp {
+        font-size: 11px;
+    }
+}
+
+@media (max-height: 700px) {
+    .hourly-section {
+        margin: 8px 0;
+        padding: 8px;
+    }
+}
+
+@media (max-height: 600px) {
+    .hourly-section {
+        margin: 6px 0;
+        padding: 6px;
+    }
+    
+    .hourly-card {
+        min-width: 55px;
+        max-width: 55px;
+        padding: 4px 2px;
+    }
+    
+    .hourly-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
