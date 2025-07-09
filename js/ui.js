@@ -4,6 +4,9 @@ class UIManager {
         this.isLoading = false;
         this.currentCity = null;
         this.weatherAnimations = new WeatherAnimations();
+        
+        // Initialize footer state on page load
+        this.showEmptyFooter();
     }
 
     initializeElements() {
@@ -63,6 +66,9 @@ class UIManager {
     }
 
     showError(message) {
+        // Show empty footer when there's an error
+        this.showEmptyFooter();
+        
         if (this.elements.errorContainer) {
             const errorText = this.elements.errorContainer.querySelector('p');
             if (errorText) {
@@ -89,62 +95,100 @@ class UIManager {
     }
 
     hideWeather() {
+        // Show empty state footer and hide content footer
+        this.showEmptyFooter();
+        
         if (this.elements.weatherContainer) {
             this.elements.weatherContainer.style.display = 'none';
         }
     }
 
-  // Replace the existing updateWeatherData method with this:
-
-updateWeatherData(data, forecastData = null, hourlyData = null) {
-    try {
-        this.currentCity = data.name;
+    // New methods to handle footer switching
+    showContentFooter() {
+        const emptyFooter = document.querySelector('.app-footer-empty');
+        const contentFooter = document.querySelector('.app-footer-content');
         
-        // Determine day/night status and apply theme
-        if (data.sys.sunrise && data.sys.sunset) {
-            const dayNightStatus = dayNightManager.getDayNightStatus(
-                data.sys.sunrise, 
-                data.sys.sunset, 
-                data.timezone
-            );
-            dayNightManager.applyTheme(dayNightStatus, data.weather[0].main);
-        }
-        
-        // Update basic info
-        this.updateElement('.temp', Utils.formatTemperature(data.main.temp));
-        this.updateElement('.feels-like', `Feels like ${Utils.formatTemperature(data.main.feels_like)}`);
-        this.updateElement('.description', Utils.capitalizeFirstLetter(data.weather[0].description));
-        this.updateElement('.city', `${data.name}, ${data.sys.country}`);
-        
-        // Update weather icon (now with day/night consideration)
-        this.updateWeatherIcon(data.weather[0].main, data.weather[0].description, dayNightManager.currentTheme);
-        
-        // Update weather animations
-        this.weatherAnimations.updateWeatherAnimation(data.weather[0].main);
-        
-        // Update detailed weather info
-        this.updateWeatherDetails(data);
-        
-        // Update hourly forecast if available
-        if (hourlyData) {
-            this.updateHourlyForecast(hourlyData);
-        }
-        
-        // Update forecast if available
-        if (forecastData) {
-            this.updateForecast(forecastData);
-        }
-        
-        // Update timestamp
-        this.updateElement('.update-time', Utils.getCurrentTime());
-        
-        this.showWeather();
-    } catch (error) {
-        console.error('Error updating weather data:', error);
-        this.showError('Failed to display weather data');
+        if (emptyFooter) emptyFooter.style.display = 'none';
+        if (contentFooter) contentFooter.style.display = 'block';
     }
-}
-    updateWeatherDetails(data) {
+
+    showEmptyFooter() {
+        const emptyFooter = document.querySelector('.app-footer-empty');
+        const contentFooter = document.querySelector('.app-footer-content');
+        
+        if (emptyFooter) emptyFooter.style.display = 'block';
+        if (contentFooter) contentFooter.style.display = 'none';
+    }
+
+    clearWeather() {
+        // Show empty state footer and hide content footer
+        this.showEmptyFooter();
+        
+        // Clear weather container
+        if (this.elements.weatherContainer) {
+            this.elements.weatherContainer.innerHTML = '';
+            this.elements.weatherContainer.style.display = 'none';
+        }
+    }
+
+    updateWeatherData(data, forecastData = null, hourlyData = null) {
+        // Hide empty state footer and show content footer
+        this.showContentFooter();
+        
+        // Show weather container
+        if (this.elements.weatherContainer) {
+            this.elements.weatherContainer.style.display = 'block';
+        }
+
+        try {
+            this.currentCity = data.name;
+            
+            // Determine day/night status and apply theme
+            if (data.sys.sunrise && data.sys.sunset) {
+                const dayNightStatus = dayNightManager.getDayNightStatus(
+                    data.sys.sunrise, 
+                    data.sys.sunset, 
+                    data.timezone
+                );
+                dayNightManager.applyTheme(dayNightStatus, data.weather[0].main);
+            }
+            
+            // Update basic info
+            this.updateElement('.temp', Utils.formatTemperature(data.main.temp));
+            this.updateElement('.feels-like', `Feels like ${Utils.formatTemperature(data.main.feels_like)}`);
+            this.updateElement('.description', Utils.capitalizeFirstLetter(data.weather[0].description));
+            this.updateElement('.city', `${data.name}, ${data.sys.country}`);
+            
+            // Update weather icon (now with day/night consideration)
+            this.updateWeatherIcon(data.weather[0].main, data.weather[0].description, dayNightManager.currentTheme);
+            
+            // Update weather animations
+            this.weatherAnimations.updateWeatherAnimation(data.weather[0].main);
+            
+            // Update detailed weather info
+            this.updateWeatherDetails(data);
+            
+            // Update hourly forecast if available
+            if (hourlyData) {
+                this.updateHourlyForecast(hourlyData);
+            }
+            
+            // Update forecast if available
+            if (forecastData) {
+                this.updateForecast(forecastData);
+            }
+            
+            // Update timestamp
+            this.updateElement('.update-time', Utils.getCurrentTime());
+            
+            this.showWeather();
+        } catch (error) {
+            console.error('Error updating weather data:', error);
+            this.showError('Failed to display weather data');
+        }
+    }
+
+ updateWeatherDetails(data) {
         // Humidity
         this.updateElement('.humidity', `${data.main.humidity}%`);
         this.updateProgressBar('.progress-fill', data.main.humidity);
@@ -168,7 +212,7 @@ updateWeatherData(data, forecastData = null, hourlyData = null) {
             this.updateSunriseSunset(data.sys.sunrise, data.sys.sunset, data.timezone);
         }
     }
-
+    
       updateSunriseSunset(sunrise, sunset, timezone) {
         const sunriseTime = new Date(sunrise * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         const sunsetTime = new Date(sunset * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="css/base.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/suggestions.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
@@ -14,139 +15,162 @@
 </head>
 <body>
     <div class="card">
-        <!-- Header with app title -->
-        <header class="app-header">
-            <h1 class="app-title">
-                <i class="fas fa-cloud-sun"></i>
-                Weather
-            </h1>
-        </header>
+        <div class="card-content">
+            <!-- Header with app title -->
+            <header class="app-header">
+                <h1 class="app-title">
+                    <i class="fas fa-cloud-sun"></i>
+                    Weather
+                </h1>
+            </header>
 
-        <!-- Search Section -->
-        <div class="search">
-            <div class="search-container">
-                <input type="text" placeholder="Enter City Name" spellcheck="false" autocomplete="off" aria-label="City name">
-                <button type="button" aria-label="Search weather">
-                    <span class="search-icon">
-                        <img src="images/search.png" alt="Search">
-                    </span>
-                    <span class="loading-spinner" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i>
-                    </span>
-                </button>
+            <!-- Search Section -->
+            <div class="search">
+                <div class="search-container">
+                    <input type="text" placeholder="Enter City Name" spellcheck="false" autocomplete="off" aria-label="City name">
+                    <button type="button" aria-label="Search weather">
+                        <span class="search-icon">
+                            <img src="images/search.png" alt="Search">
+                        </span>
+                        <span class="loading-spinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="suggestions" role="listbox" aria-label="City suggestions"></div>
             </div>
-            <div class="suggestions" role="listbox" aria-label="City suggestions"></div>
-        </div>
 
-        <!-- Status Messages -->
-        <div class="status-messages">
-            <div class="error" role="alert" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Invalid City Name</p>
-            </div>
-            <div class="loading" style="display: none;">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Loading weather data...</p>
-            </div>
-        </div>
-
-        <!-- Weather Display -->
-        <div class="weather">
-            <div class="weather-main">
-                <img src="images/rain.png" class="weather-icon" alt="Weather condition">
-                <div class="temp-container">
-                    <h2 class="temp">22°C</h2>
-                    <p class="feels-like">Feels like 25°C</p>
+            <!-- Status Messages -->
+            <div class="status-messages">
+                <div class="error" role="alert" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Invalid City Name</p>
+                </div>
+                <div class="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading weather data...</p>
                 </div>
             </div>
-            
-            <div class="weather-info">
-                <p class="description">Light Rain</p>
-                <h3 class="city">
-                    <i class="fas fa-map-marker-alt"></i>
-                    New York
-                </h3>
-                <p class="last-updated">
-                    <i class="fas fa-clock"></i>
-                    Last updated: <span class="update-time">--</span>
-                </p>
-            </div>
 
-            <!-- Forecast will be dynamically inserted here -->
+            <!-- Weather Display -->
+            <div class="weather" style="display: none;">
+                <div class="weather-main">
+                    <img src="images/rain.png" class="weather-icon" alt="Weather condition">
+                    <div class="temp-container">
+                        <h2 class="temp">22°C</h2>
+                        <p class="feels-like">Feels like 25°C</p>
+                    </div>
+                </div>
+                
+                <div class="weather-info">
+                    <p class="description">Light Rain</p>
+                    <h3 class="city">
+                        <i class="fas fa-map-marker-alt"></i>
+                        New York
+                    </h3>
+                    <p class="last-updated">
+                        <i class="fas fa-clock"></i>
+                        Last updated: <span class="update-time">--</span>
+                    </p>
+                </div>
 
-            <!-- Enhanced Details Grid -->
-            <div class="details">
-                <div class="col" data-tooltip="Current humidity level">
-                    <i class="fas fa-tint"></i>
-                    <div class="col-content">
-                        <p class="humidity">50%</p>
-                        <p class="label">Humidity</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 50%"></div>
+                <!-- Forecast will be dynamically inserted here -->
+
+                <!-- Enhanced Details Grid -->
+                <div class="details">
+                    <div class="col" data-tooltip="Current humidity level">
+                        <i class="fas fa-tint"></i>
+                        <div class="col-content">
+                            <p class="humidity">50%</p>
+                            <p class="label">Humidity</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" data-tooltip="Wind speed and direction">
+                        <i class="fas fa-wind"></i>
+                        <div class="col-content">
+                            <p class="wind">15 km/h</p>
+                            <p class="label">Wind Speed</p>
+                            <p class="wind-direction">NE</p>
+                        </div>
+                    </div>
+                    <div class="col" data-tooltip="Atmospheric pressure">
+                        <i class="fas fa-thermometer-half"></i>
+                        <div class="col-content">
+                            <p class="pressure">1013 hPa</p>
+                            <p class="label">Pressure</p>
+                            <p class="pressure-trend">Stable</p>
+                        </div>
+                    </div>
+                    <div class="col" data-tooltip="Visibility distance">
+                        <i class="fas fa-eye"></i>
+                        <div class="col-content">
+                            <p class="visibility">10 km</p>
+                            <p class="label">Visibility</p>
+                            <p class="visibility-status">Good</p>
+                        </div>
+                    </div>
+                    <div class="col" data-tooltip="UV Index level">
+                        <i class="fas fa-sun"></i>
+                        <div class="col-content">
+                            <p class="uv-index">5</p>
+                            <p class="label">UV Index</p>
+                            <p class="uv-level">Moderate</p>
+                        </div>
+                    </div>
+                    <div class="col" data-tooltip="Sunrise and sunset times">
+                        <i class="fas fa-sunrise"></i>
+                        <div class="col-content">
+                            <p class="sunrise">06:30</p>
+                            <p class="label">Sunrise</p>
+                            <p class="sunset">18:45</p>
                         </div>
                     </div>
                 </div>
-                <div class="col" data-tooltip="Wind speed and direction">
-                    <i class="fas fa-wind"></i>
-                    <div class="col-content">
-                        <p class="wind">15 km/h</p>
-                        <p class="label">Wind Speed</p>
-                        <p class="wind-direction">NE</p>
-                    </div>
-                </div>
-                <div class="col" data-tooltip="Atmospheric pressure">
-                    <i class="fas fa-thermometer-half"></i>
-                    <div class="col-content">
-                        <p class="pressure">1013 hPa</p>
-                        <p class="label">Pressure</p>
-                        <p class="pressure-trend">Stable</p>
-                    </div>
-                </div>
-                <div class="col" data-tooltip="Visibility distance">
-                    <i class="fas fa-eye"></i>
-                    <div class="col-content">
-                        <p class="visibility">10 km</p>
-                        <p class="label">Visibility</p>
-                        <p class="visibility-status">Good</p>
-                    </div>
-                </div>
-                <div class="col" data-tooltip="UV Index level">
-                    <i class="fas fa-sun"></i>
-                    <div class="col-content">
-                        <p class="uv-index">5</p>
-                        <p class="label">UV Index</p>
-                        <p class="uv-level">Moderate</p>
-                    </div>
-                </div>
-                <div class="col" data-tooltip="Sunrise and sunset times">
-                    <i class="fas fa-sunrise"></i>
-                    <div class="col-content">
-                        <p class="sunrise">06:30</p>
-                        <p class="label">Sunrise</p>
-                        <p class="sunset">18:45</p>
-                    </div>
+
+                <!-- Action Buttons -->
+                <div class="weather-actions">
+                    <button class="action-btn refresh-btn" onclick="refreshWeather()">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                    <button class="action-btn location-btn" onclick="getUserLocation()">
+                        <i class="fas fa-location-arrow"></i>
+                        My Location
+                    </button>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="weather-actions">
-                <button class="action-btn refresh-btn" onclick="refreshWeather()">
-                    <i class="fas fa-sync-alt"></i>
-                    Refresh
-                </button>
-                <button class="action-btn location-btn" onclick="getUserLocation()">
-                    <i class="fas fa-location-arrow"></i>
-                    My Location
-                </button>
-            </div>
+            <!-- Footer for content state (inside card-content, only shows when weather data is displayed) -->
+            <footer class="app-footer-content">
+                <div class="footer-content">
+                    <div class="developer-info">
+                        <h4 class="developer-name">© 2025 Mohamad Eldhaibi</h4>
+                        <p class="developer-email">mohamad.eldhaibi@gmail.com</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="social-link github" aria-label="GitHub Profile">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="social-link linkedin" aria-label="LinkedIn Profile">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://yourwebsite.com" target="_blank" rel="noopener noreferrer" class="social-link website" aria-label="Personal Website">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                    </div>
+                </div>
+            </footer>
         </div>
 
-        <!-- Footer inside the card -->
-        <footer class="app-footer">
+        <!-- Footer for empty state (outside card-content, always at bottom when no content) -->
+        <footer class="app-footer-empty">
             <div class="footer-content">
                 <div class="developer-info">
-                    <h4 class="developer-name">Your Name</h4>
-                    <p class="developer-email">your.email@example.com</p>
+                    <h4 class="developer-name">© 2025 Mohamad Eldhaibi</h4>
+                    <p class="developer-email">mohamad.eldhaibi@gmail.com</p>
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="social-link github" aria-label="GitHub Profile">

@@ -55,13 +55,28 @@ body {
     border-radius: var(--border-radius);
     padding: 25px;
     text-align: center;
-    overflow-y: auto;
+    overflow-y: auto; /* Enable scrolling on card */
     overflow-x: hidden;
     box-shadow: var(--shadow-heavy);
     position: relative;
     backdrop-filter: blur(15px);
     animation: slideIn 0.8s ease-out;
     transition: background 0.8s ease, box-shadow 0.8s ease, color 0.5s ease;
+    /* Add flexbox to make footer stick to bottom */
+    display: flex;
+    flex-direction: column;
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    scroll-behavior: smooth;
+}
+
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: visible; /* Remove scroll from card-content */
+    min-height: 0;
 }
 
 @keyframes slideIn {
@@ -75,14 +90,7 @@ body {
     }
 }
 
-/* Custom Scrollbar Styles */
-.card {
-    /* Custom scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-}
-
-/* Webkit browsers (Chrome, Safari, Edge) */
+/* Custom Scrollbar Styles - Move back to .card */
 .card::-webkit-scrollbar {
     width: 8px;
 }
@@ -98,17 +106,12 @@ body {
     border: 2px solid transparent;
     background-clip: content-box;
     transition: all 0.3s ease;
+    opacity: 0;
 }
 
 .card::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.4);
     background-clip: content-box;
-}
-
-/* Hide scrollbar when not scrolling */
-.card::-webkit-scrollbar-thumb {
-    opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
 .card:hover::-webkit-scrollbar-thumb {
@@ -139,11 +142,6 @@ body {
 
 .night-theme .card {
     scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
-}
-
-/* Smooth scrolling behavior */
-.card {
-    scroll-behavior: smooth;
 }
 
 /* Enhanced scrollbar visibility on scroll */
@@ -216,12 +214,32 @@ body {
     display: none;
 }
 
-/* Footer Styles - Fixed positioning within card */
-.app-footer {
-    margin-top: 30px;
+/* Footer Styles - Two separate footers */
+
+/* Footer for empty state (when no weather data) - sticks to bottom */
+.app-footer-empty {
+    margin-top: auto; /* Push to bottom when there's little content */
     padding: 20px 0 10px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
+    flex-shrink: 0;
+    display: block; /* Show by default */
+}
+
+/* Footer for content state (when weather data is shown) - normal flow */
+.app-footer-content {
+    margin-top: 30px; /* Normal spacing after content */
+    padding: 20px 0 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    flex-shrink: 0;
+    display: none; /* Hidden by default */
+}
+
+/* Common footer styles */
+.app-footer-empty,
+.app-footer-content {
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .footer-content {
@@ -294,7 +312,8 @@ body {
 }
 
 /* Day theme footer adjustments */
-.day-theme .app-footer {
+.day-theme .app-footer-empty,
+.day-theme .app-footer-content {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -318,7 +337,8 @@ body {
 }
 
 /* Night theme footer adjustments */
-.night-theme .app-footer {
+.night-theme .app-footer-empty,
+.night-theme .app-footer-content {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -329,9 +349,17 @@ body {
 
 /* Responsive footer adjustments */
 @media (max-width: 480px) {
-    .app-footer {
-        margin-top: 20px;
+    .app-footer-empty,
+    .app-footer-content {
         padding: 15px 0 8px 0;
+    }
+    
+    .app-footer-empty {
+        margin-top: auto; /* Keep auto for empty state */
+    }
+    
+    .app-footer-content {
+        margin-top: 20px; /* Reduced spacing for mobile */
     }
     
     .developer-name {

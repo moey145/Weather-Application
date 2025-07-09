@@ -203,3 +203,4 @@ async function checkWeather(city) {
         await window.weatherApp.searchWeather(city);
     }
 }
+
