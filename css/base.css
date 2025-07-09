@@ -44,6 +44,7 @@ body {
     transition: background 1s ease, color 0.5s ease;
 }
 
+/* Card with proper scroll and footer positioning */
 .card {
     width: 100%;
     max-width: 950px;
@@ -181,3 +182,185 @@ body {
     }
 }
 
+/* Remove scroll arrows/buttons */
+.card::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.card::-webkit-scrollbar-button:start:decrement,
+.card::-webkit-scrollbar-button:end:increment {
+    display: none;
+}
+
+/* For Firefox */
+.card {
+    scrollbar-arrow-color: transparent;
+}
+
+/* Additional arrow removal for all webkit browsers */
+.card::-webkit-scrollbar-button:vertical:start:decrement {
+    display: none;
+}
+
+.card::-webkit-scrollbar-button:vertical:end:increment {
+    display: none;
+}
+
+.card::-webkit-scrollbar-button:horizontal:start:decrement {
+    display: none;
+}
+
+.card::-webkit-scrollbar-button:horizontal:end:increment {
+    display: none;
+}
+
+/* Footer Styles - Fixed positioning within card */
+.app-footer {
+    margin-top: 30px;
+    padding: 20px 0 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.developer-info {
+    margin-bottom: 3px;
+}
+
+.developer-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin: 0 0 4px 0;
+    letter-spacing: 0.5px;
+}
+
+.developer-email {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    font-weight: 300;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.social-link.github:hover {
+    background: #333;
+    color: #fff;
+}
+
+.social-link.linkedin:hover {
+    background: #0077b5;
+    color: #fff;
+}
+
+.social-link.website:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* Day theme footer adjustments */
+.day-theme .app-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.day-theme .developer-name {
+    color: var(--day-text);
+}
+
+.day-theme .developer-email {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.day-theme .social-link {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--day-text);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.day-theme .social-link:hover {
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Night theme footer adjustments */
+.night-theme .app-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.night-theme .social-link {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive footer adjustments */
+@media (max-width: 480px) {
+    .app-footer {
+        margin-top: 20px;
+        padding: 15px 0 8px 0;
+    }
+    
+    .developer-name {
+        font-size: 0.9rem;
+    }
+    
+    .developer-email {
+        font-size: 0.8rem;
+    }
+    
+    .social-links {
+        gap: 12px;
+    }
+    
+    .social-link {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .social-links {
+        gap: 10px;
+    }
+    
+    .social-link {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+}
