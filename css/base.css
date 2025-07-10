@@ -266,7 +266,34 @@ body {
     color: rgba(255, 255, 255, 0.8);
     margin: 0;
     font-weight: 300;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
+
+.developer-email:hover {
+    text-decoration: underline;
+    transform: translateY(-1px);
+}
+
+/* Day theme email adjustments */
+.day-theme .developer-email {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.day-theme .developer-email:hover {
+    text-decoration: underline;
+}
+
+/* Night theme email adjustments */
+.night-theme .developer-email {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.night-theme .developer-email:hover {
+    text-decoration: underline;
+}
+
 
 .social-links {
     display: flex;
@@ -319,10 +346,6 @@ body {
 
 .day-theme .developer-name {
     color: var(--day-text);
-}
-
-.day-theme .developer-email {
-    color: rgba(0, 0, 0, 0.6);
 }
 
 .day-theme .social-link {
