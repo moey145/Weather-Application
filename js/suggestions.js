@@ -20,7 +20,9 @@ class SuggestionsManager {
         try {
             const locations = await this.weatherAPI.getLocationSuggestions(query);
             if (locations.length > 0) {
-                this.display(locations.slice(0, 5)); // Limit to 5 suggestions
+                // Sort by relevance for better matching
+                const sortedLocations = this.sortByRelevance(locations, query);
+                this.display(sortedLocations.slice(0, 5)); // Limit to 5 suggestions
             } else {
                 this.hide();
             }
@@ -28,6 +30,59 @@ class SuggestionsManager {
             console.warn('Error fetching suggestions:', error);
             this.hide();
         }
+    }
+
+    // Add this method to sort by relevance
+    sortByRelevance(locations, query) {
+        const queryLower = query.toLowerCase();
+        
+        return locations.sort((a, b) => {
+            const aName = a.name.toLowerCase();
+            const bName = b.name.toLowerCase();
+            
+            // Exact match first
+            if (aName === queryLower) return -1;
+            if (bName === queryLower) return 1;
+            
+            // Starts with query
+            if (aName.startsWith(queryLower) && !bName.startsWith(queryLower)) return -1;
+            if (bName.startsWith(queryLower) && !aName.startsWith(queryLower)) return 1;
+            
+            // Contains query (this helps with "sydne" -> "Sydney")
+            if (aName.includes(queryLower) && !bName.includes(queryLower)) return -1;
+            if (bName.includes(queryLower) && !aName.includes(queryLower)) return 1;
+            
+            // Similarity score for fuzzy matching
+            const aScore = this.getSimilarityScore(aName, queryLower);
+            const bScore = this.getSimilarityScore(bName, queryLower);
+            
+            return bScore - aScore; // Higher score first
+        });
+    }
+
+    // Add this method for fuzzy matching
+    getSimilarityScore(text, query) {
+        if (text.includes(query)) return 100;
+        
+        let score = 0;
+        let queryIndex = 0;
+        
+        for (let i = 0; i < text.length && queryIndex < query.length; i++) {
+            if (text[i] === query[queryIndex]) {
+                score += 2;
+                queryIndex++;
+            } else if (Math.abs(text.charCodeAt(i) - query.charCodeAt(queryIndex)) === 1) {
+                score += 1; // Similar character
+                queryIndex++;
+            }
+        }
+        
+        // Bonus for matching most of the query
+        if (queryIndex === query.length) {
+            score += 50;
+        }
+        
+        return score;
     }
 
     display(locations) {
