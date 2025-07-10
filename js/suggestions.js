@@ -11,7 +11,7 @@ class SuggestionsManager {
         
         this.debouncedGetSuggestions = Utils.debounce(
             this.getSuggestions.bind(this), 
-            200 // Reduced debounce for faster response
+            200
         );
     }
 
@@ -19,6 +19,7 @@ class SuggestionsManager {
         // Cancel previous request if still pending
         if (this.abortController) {
             this.abortController.abort();
+            this.abortController = null;
         }
 
         if (!query || query.length < 1) {
@@ -195,13 +196,13 @@ class SuggestionsManager {
         
         const locationName = this.formatLocationName(location);
         
-        // Create suggestion content with highlighting
+        // Create suggestion content WITHOUT highlighting
         const content = document.createElement('div');
         content.classList.add('suggestion-content');
         
         const nameElement = document.createElement('span');
         nameElement.classList.add('suggestion-name');
-        nameElement.innerHTML = this.highlightMatch(locationName, query);
+        nameElement.textContent = locationName; // No highlighting
         
         const detailsElement = document.createElement('span');
         detailsElement.classList.add('suggestion-details');
@@ -264,11 +265,9 @@ class SuggestionsManager {
         return suggestionItem;
     }
 
+    // Remove highlighting function - just return text as-is
     highlightMatch(text, query) {
-        if (!query || query.length < 2) return text;
-        
-        const regex = new RegExp(`(${query})`, 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
+        return text; // No highlighting
     }
 
     showLoadingState() {
@@ -443,7 +442,9 @@ class SuggestionsManager {
                 break;
             case 'Escape':
                 this.hide();
-                this.uiManager.focusInput();
+                if (this.uiManager && this.uiManager.focusInput) {
+                    this.uiManager.focusInput();
+                }
                 break;
         }
     }
