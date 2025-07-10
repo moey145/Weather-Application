@@ -32,7 +32,7 @@ class SuggestionsManager {
         }
     }
 
-    // Add this method to sort by relevance
+    // More lenient sorting by relevance
     sortByRelevance(locations, query) {
         const queryLower = query.toLowerCase();
         
@@ -48,38 +48,42 @@ class SuggestionsManager {
             if (aName.startsWith(queryLower) && !bName.startsWith(queryLower)) return -1;
             if (bName.startsWith(queryLower) && !aName.startsWith(queryLower)) return 1;
             
-            // Contains query (this helps with "sydne" -> "Sydney")
+            // Contains query anywhere
             if (aName.includes(queryLower) && !bName.includes(queryLower)) return -1;
             if (bName.includes(queryLower) && !aName.includes(queryLower)) return 1;
             
-            // Similarity score for fuzzy matching
-            const aScore = this.getSimilarityScore(aName, queryLower);
-            const bScore = this.getSimilarityScore(bName, queryLower);
+            // Fuzzy matching - more lenient
+            const aScore = this.getFuzzyScore(aName, queryLower);
+            const bScore = this.getFuzzyScore(bName, queryLower);
             
             return bScore - aScore; // Higher score first
         });
     }
 
-    // Add this method for fuzzy matching
-    getSimilarityScore(text, query) {
+    // More lenient fuzzy matching
+    getFuzzyScore(text, query) {
         if (text.includes(query)) return 100;
         
         let score = 0;
         let queryIndex = 0;
         
+        // Check how many characters match in order
         for (let i = 0; i < text.length && queryIndex < query.length; i++) {
             if (text[i] === query[queryIndex]) {
-                score += 2;
-                queryIndex++;
-            } else if (Math.abs(text.charCodeAt(i) - query.charCodeAt(queryIndex)) === 1) {
-                score += 1; // Similar character
+                score += 10; // Higher score for exact matches
                 queryIndex++;
             }
         }
         
-        // Bonus for matching most of the query
-        if (queryIndex === query.length) {
+        // Bonus for matching most characters
+        const matchRatio = queryIndex / query.length;
+        if (matchRatio > 0.6) { // If 60% or more characters match
             score += 50;
+        }
+        
+        // Extra bonus for partial matches
+        if (queryIndex >= query.length - 1) { // Missing only 1 character
+            score += 30;
         }
         
         return score;
