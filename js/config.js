@@ -1,8 +1,7 @@
 const CONFIG = {
     API: {
-        KEY: process.env.NEXT_PUBLIC_API_KEY, // Use an environment variable
-        BASE_URL: "https://api.openweathermap.org/data/2.5",
-        GEO_URL: "https://api.openweathermap.org/geo/1.0",
+        BASE_URL: "/api/weather", // Now points to your serverless function
+        GEO_URL: "/api/geo",      // If you create a geo proxy, otherwise remove
         UNITS: "metric",
         LANGUAGE: "en"
     },
