@@ -1,6 +1,6 @@
 const CONFIG = {
     API: {
-        KEY: "73539ff657dc00543d6c7d09024d8f65",
+        KEY: process.env.NEXT_PUBLIC_API_KEY, // Use an environment variable
         BASE_URL: "https://api.openweathermap.org/data/2.5",
         GEO_URL: "https://api.openweathermap.org/geo/1.0",
         UNITS: "metric",
