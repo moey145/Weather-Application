@@ -7,12 +7,12 @@ class SuggestionsManager {
         
         this.debouncedGetSuggestions = Utils.debounce(
             this.getSuggestions.bind(this), 
-            300
+            200  // Faster response
         );
     }
 
     async getSuggestions(query) {
-        if (!query || query.length < 2) {
+        if (!query || query.length < 1) {  // Show suggestions after 1 character
             this.hide();
             return;
         }
@@ -20,7 +20,7 @@ class SuggestionsManager {
         try {
             const locations = await this.weatherAPI.getLocationSuggestions(query);
             if (locations.length > 0) {
-                this.display(locations);
+                this.display(locations.slice(0, 5)); // Limit to 5 suggestions
             } else {
                 this.hide();
             }
