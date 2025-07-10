@@ -1,13 +1,11 @@
 const CONFIG = {
     API: {
-        KEY: "73539ff657dc00543d6c7d09024d8f65",
-        BASE_URL: "https://api.openweathermap.org/data/2.5",
-        GEO_URL: "https://api.openweathermap.org/geo/1.0",
+        BASE_URL: "/api/weather",  // All calls now go through your Vercel Function
         UNITS: "metric",
         LANGUAGE: "en"
     },
     CACHE: {
-        DURATION: 10 * 60 * 1000, // 10 minutes
+        DURATION: 10 * 60 * 1000,  // 10 minutes
         MAX_SIZE: 50
     },
     UI: {

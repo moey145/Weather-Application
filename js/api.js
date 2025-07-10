@@ -8,23 +8,19 @@ class WeatherAPI {
         if (!validation.valid) {
             throw new Error(validation.error);
         }
-
         const cityName = validation.city;
         const cacheKey = `weather_${cityName.toLowerCase()}`;
-        
+
         // Check cache first
         const cached = weatherCache.get(cacheKey);
-        if (cached) {
-            return cached;
-        }
+        if (cached) return cached;
 
         // Prevent duplicate requests
         if (this.pendingRequests.has(cacheKey)) {
             return this.pendingRequests.get(cacheKey);
         }
 
-        const url = `${CONFIG.API.BASE_URL}/weather?q=${encodeURIComponent(cityName)}&appid=${CONFIG.API.KEY}&units=${CONFIG.API.UNITS}&lang=${CONFIG.API.LANGUAGE}`;
-        
+        const url = `${CONFIG.API.BASE_URL}?type=weather&q=${encodeURIComponent(cityName)}`;
         const promise = this.fetchWithTimeout(url, 10000)
             .then(response => {
                 if (response.status === 404) {
@@ -58,24 +54,19 @@ class WeatherAPI {
         if (!validation.valid) {
             throw new Error(validation.error);
         }
-
         const cityName = validation.city;
         const cacheKey = `forecast_${cityName.toLowerCase()}`;
-        
+
         // Check cache first
         const cached = weatherCache.get(cacheKey);
-        if (cached) {
-            return cached;
-        }
+        if (cached) return cached;
 
-        const url = `${CONFIG.API.BASE_URL}/forecast?q=${encodeURIComponent(cityName)}&appid=${CONFIG.API.KEY}&units=${CONFIG.API.UNITS}&lang=${CONFIG.API.LANGUAGE}`;
-        
+        const url = `${CONFIG.API.BASE_URL}?type=forecast&q=${encodeURIComponent(cityName)}`;
         try {
             const response = await this.fetchWithTimeout(url, 10000);
             if (!response.ok) {
                 throw new Error(`Forecast service error (${response.status})`);
             }
-            
             const data = await response.json();
             weatherCache.set(cacheKey, data);
             return data;
@@ -86,8 +77,7 @@ class WeatherAPI {
     }
 
     async getForecastByCoords(lat, lon) {
-        const url = `${CONFIG.API.BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.API.KEY}&units=${CONFIG.API.UNITS}&lang=${CONFIG.API.LANGUAGE}`;
-        
+        const url = `${CONFIG.API.BASE_URL}?type=forecast&lat=${lat}&lon=${lon}`;
         const response = await this.fetchWithTimeout(url, 10000);
         if (!response.ok) {
             throw new Error(`Failed to get forecast for your location (${response.status})`);
@@ -99,9 +89,7 @@ class WeatherAPI {
         if (!query || query.length < 2) {
             return [];
         }
-
-        const url = `${CONFIG.API.GEO_URL}/direct?q=${encodeURIComponent(query.trim())}&limit=${CONFIG.UI.MAX_SUGGESTIONS}&appid=${CONFIG.API.KEY}`;
-        
+        const url = `${CONFIG.API.BASE_URL}?type=geo&q=${encodeURIComponent(query.trim())}`;
         try {
             const response = await this.fetchWithTimeout(url, 5000);
             if (!response.ok) {
@@ -116,8 +104,7 @@ class WeatherAPI {
     }
 
     async getWeatherByCoords(lat, lon) {
-        const url = `${CONFIG.API.BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.API.KEY}&units=${CONFIG.API.UNITS}&lang=${CONFIG.API.LANGUAGE}`;
-        
+        const url = `${CONFIG.API.BASE_URL}?type=weather&lat=${lat}&lon=${lon}`;
         const response = await this.fetchWithTimeout(url, 10000);
         if (!response.ok) {
             throw new Error(`Failed to get weather for your location (${response.status})`);
@@ -134,57 +121,51 @@ class WeatherAPI {
         ]);
     }
 
-    // Add these methods inside the WeatherAPI class (after the existing methods)
+    async getHourlyForecast(city) {
+        try {
+            const validation = Utils.validateCityName(city);
+            if (!validation.valid) {
+                throw new Error(validation.error);
+            }
+            const cityName = validation.city;
+            const cacheKey = `hourly_${cityName.toLowerCase()}`;
 
-async getHourlyForecast(city) {
-    try {
-        const validation = Utils.validateCityName(city);
-        if (!validation.valid) {
-            throw new Error(validation.error);
+            const cached = weatherCache.get(cacheKey);
+            if (cached) return cached;
+
+            const url = `${CONFIG.API.BASE_URL}?type=forecast&q=${encodeURIComponent(cityName)}`;
+            const response = await this.fetchWithTimeout(url, 10000);
+            if (!response.ok) {
+                throw new Error(this.getErrorMessage(response.status));
+            }
+            const data = await response.json();
+            weatherCache.set(cacheKey, data);
+            return data;
+        } catch (error) {
+            console.error('Hourly forecast API error:', error);
+            throw error;
         }
-
-        const cityName = validation.city;
-        const cacheKey = `hourly_${cityName.toLowerCase()}`;
-        const cached = weatherCache.get(cacheKey);
-        if (cached) return cached;
-
-        const url = `${CONFIG.API.BASE_URL}/forecast?q=${encodeURIComponent(cityName)}&appid=${CONFIG.API.KEY}&units=${CONFIG.API.UNITS}&lang=${CONFIG.API.LANGUAGE}`;
-        const response = await this.fetchWithTimeout(url, 10000);
-        
-        if (!response.ok) {
-            throw new Error(this.getErrorMessage(response.status));
-        }
-        
-        const data = await response.json();
-        weatherCache.set(cacheKey, data);
-        return data;
-    } catch (error) {
-        console.error('Hourly forecast API error:', error);
-        throw error;
     }
-}
 
-async getHourlyForecastByCoords(lat, lon) {
-    try {
-        const cacheKey = `hourly_coords_${lat}_${lon}`;
-        const cached = weatherCache.get(cacheKey);
-        if (cached) return cached;
+    async getHourlyForecastByCoords(lat, lon) {
+        try {
+            const cacheKey = `hourly_coords_${lat}_${lon}`;
+            const cached = weatherCache.get(cacheKey);
+            if (cached) return cached;
 
-        const url = `${CONFIG.API.BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.API.KEY}&units=${CONFIG.API.UNITS}&lang=${CONFIG.API.LANGUAGE}`;
-        const response = await this.fetchWithTimeout(url, 10000);
-        
-        if (!response.ok) {
-            throw new Error(this.getErrorMessage(response.status));
+            const url = `${CONFIG.API.BASE_URL}?type=forecast&lat=${lat}&lon=${lon}`;
+            const response = await this.fetchWithTimeout(url, 10000);
+            if (!response.ok) {
+                throw new Error(this.getErrorMessage(response.status));
+            }
+            const data = await response.json();
+            weatherCache.set(cacheKey, data);
+            return data;
+        } catch (error) {
+            console.error('Hourly forecast API error:', error);
+            throw error;
         }
-        
-        const data = await response.json();
-        weatherCache.set(cacheKey, data);
-        return data;
-    } catch (error) {
-        console.error('Hourly forecast API error:', error);
-        throw error;
     }
-}
 
 getErrorMessage(status) {
     switch (status) {
