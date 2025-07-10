@@ -1,7 +1,8 @@
 const CONFIG = {
     API: {
-        BASE_URL: "/api/weather", // Now points to your serverless function
-        GEO_URL: "/api/geo",      // If you create a geo proxy, otherwise remove
+        KEY: "73539ff657dc00543d6c7d09024d8f65",
+        BASE_URL: "https://api.openweathermap.org/data/2.5",
+        GEO_URL: "https://api.openweathermap.org/geo/1.0",
         UNITS: "metric",
         LANGUAGE: "en"
     },
