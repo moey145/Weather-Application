@@ -94,8 +94,3 @@ class WeatherCache {
 
 // Global instances
 const weatherCache = new WeatherCache();
-
-// Legacy variables for backward compatibility
-const apiKey = "73539ff657dc00543d6c7d09024d8f65";
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-const geoApiUrl = "https://api.openweathermap.org/geo/1.0/direct?limit=5&q=";
