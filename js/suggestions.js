@@ -22,7 +22,7 @@ class SuggestionsManager {
         }
 
         if (!query || query.length < 1) {
-            this.showPopularCities();
+            this.hide();
             return;
         }
 
@@ -56,34 +56,6 @@ class SuggestionsManager {
                 console.warn('Error fetching suggestions:', error);
                 this.showErrorState();
             }
-        }
-    }
-
-    showPopularCities() {
-        const suggestions = [];
-        
-        // Add popular cities only (no recent searches)
-        if (this.popularCities.length > 0) {
-            suggestions.push({
-                type: 'header',
-                text: 'Popular Cities'
-            });
-            
-            this.popularCities.slice(0, 5).forEach(city => {
-                suggestions.push({
-                    type: 'popular',
-                    name: city.name,
-                    country: city.country,
-                    displayName: `${city.name}, ${city.country}`,
-                    icon: 'fas fa-star'
-                });
-            });
-        }
-
-        if (suggestions.length > 0) {
-            this.displayMixed(suggestions);
-        } else {
-            this.hide();
         }
     }
 
@@ -133,7 +105,6 @@ class SuggestionsManager {
         }
     }
 
-    // ...existing code...
     sortLocationsByRelevance(locations, query) {
         const queryLower = query.toLowerCase();
         
