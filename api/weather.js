@@ -1,7 +1,3 @@
-// filepath: api/weather.js
-// (no changes under js/, this lives in /api)
-// If using node-fetch: uncomment the next line
-// import fetch from "node-fetch";
 
 export default async function handler(req, res) {
   console.log("🔍 Incoming query:", req.query);
