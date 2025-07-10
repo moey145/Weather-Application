@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     let urlStr;
     if (type === "geo") {
-      urlStr = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(q)}&limit=5`;
+      urlStr = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(q)}&limit=5&appid=${key}`;
     } else {
       const path = type === "forecast" ? "forecast" : "weather";
       const params = new URLSearchParams();
