@@ -35,9 +35,9 @@ A modern, responsive weather application that provides real-time weather informa
 
 ## 📦 Installation
 
-**Clone the repository**
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/Weather-Application.git
+   git clone https://github.com/moey145/Weather-Application.git
    cd Weather-Application
    ```
 
@@ -45,52 +45,59 @@ A modern, responsive weather application that provides real-time weather informa
    - Visit [OpenWeatherMap](https://openweathermap.org/api)
    - Sign up and get your free API key
 
-3. **Create Configuration File**
-   - Create a new file: `js/config.js`
-   - Add the following configuration with your API key:
-   ```javascript
-   const CONFIG = {
-       API: {
-           KEY: "your_api_key_here", // Replace with your actual API key
-           BASE_URL: "https://api.openweathermap.org/data/2.5",
-           GEO_URL: "https://api.openweathermap.org/geo/1.0",
-           UNITS: "metric",
-           LANGUAGE: "en"
-       },
-       CACHE: {
-           DURATION: 10 * 60 * 1000, // 10 minutes
-           MAX_SIZE: 50
-       },
-       UI: {
-           DEBOUNCE_DELAY: 300,
-           MAX_SUGGESTIONS: 5,
-           ANIMATION_DURATION: 300
-       }
-   };
+3. **Environment Setup**
+   - Create a `.env` file in the root directory
+   - Add your API key:
+   ```env
+   VITE_OPENWEATHER_API_KEY=your_actual_api_key_here
    ```
 
-4. **Run the Application**
-   - Open `index.html` in your web browser
-   - Or use a local server:
+4. **Configuration**
+   - The `js/config.js` file is already configured to use environment variables
+   - No additional setup needed - it will automatically read from `.env`
+
+5. **Run the Application**
+   - For development with environment variables:
    ```bash
-   # Using Python
-   python -m http.server 8000
+   # Using Vite (recommended)
+   npm install -g vite
+   vite
    
-   # Using Node.js (with live-server)
+   # Or using a local server
+   python -m http.server 8000
    npx live-server
    ```
 
-## ⚠️ Important Notes
+## 🔐 Security & Environment Variables
 
-- The `js/config.js` file is not included in the repository for security reasons
-- Make sure to replace `"your_api_key_here"` with your actual OpenWeatherMap API key
-- Keep your API key private and never commit it to version control
+### For Local Development
+- Create a `.env` file in the project root
+- Add your API key: `VITE_OPENWEATHER_API_KEY=your_key_here`
+- The `.env` file is automatically gitignored for security
+
+### For Vercel Deployment
+1. **In Vercel Dashboard**:
+   - Go to your project settings
+   - Navigate to Environment Variables
+   - Add: `VITE_OPENWEATHER_API_KEY` = `your_api_key_here`
+
+2. **For Other Hosting Platforms**:
+   - Add the environment variable in your hosting platform's settings
+   - Ensure the variable name is `VITE_OPENWEATHER_API_KEY`
+
+### ⚠️ Important Security Notes
+- **Never commit your API key** to version control
+- **Always use environment variables** for API keys
+- **The `.env` file is gitignored** for your protection
+- **For production**, use your hosting platform's environment variable system
 
 ## 🏗️ Project Structure
 
 ```
 Weather-Application/
 ├── index.html              # Main HTML file
+├── .env                    # Environment variables (not in git)
+├── .gitignore              # Git ignore file
 ├── css/
 │   ├── main.css            # CSS imports
 │   ├── base.css            # Base styles and variables
@@ -112,8 +119,23 @@ Weather-Application/
 │   ├── weather-animations.js # Weather animations
 │   └── suggestions.js      # Search suggestions
 ├── images/                 # Weather icons and assets
+│   └── sun.svg             # Custom sun favicon
 └── README.md
 ```
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+1. **Connect your GitHub repository** to Vercel
+2. **Add environment variable** in Vercel dashboard:
+   - Key: `VITE_OPENWEATHER_API_KEY`
+   - Value: Your OpenWeatherMap API key
+3. **Deploy** - Vercel will automatically handle the build
+
+### Other Platforms
+- **Netlify**: Add environment variables in site settings
+- **GitHub Pages**: Use GitHub Secrets for environment variables
+- **Heroku**: Use `heroku config:set VITE_OPENWEATHER_API_KEY=your_key`
 
 ## 🎨 Themes
 
@@ -154,10 +176,32 @@ The application is fully responsive with breakpoints for:
 - **Geolocation**: One-click access to local weather
 - **Error Handling**: Clear messages for invalid locations
 
-## Acknowledgments
+## 🐛 Troubleshooting
+
+### Common Issues
+- **API Key Error**: Ensure your `.env` file exists and contains the correct API key
+- **CORS Errors**: Use a local server instead of opening the HTML file directly
+- **Environment Variables**: Make sure your hosting platform supports environment variables
+
+### Development Tips
+- **Test locally**: Always test with your `.env` file before deploying
+- **Check console**: Use browser developer tools to debug API issues
+- **API Limits**: Free OpenWeatherMap accounts have rate limits
+
+## 👤 Author
+
+**Mohamad Eldhaibi**
+- GitHub: [@moey145](https://github.com/moey145)
+- LinkedIn: [Mohamad Eldhaibi](https://www.linkedin.com/in/mohamad-eldhaibi-8ba8a42b7)
+- Website: [mohamadeldhaibi.com](https://www.mohamadeldhaibi.com)
+- Email: [mohamad.eldhaibi@gmail.com](mailto:mohamad.eldhaibi@gmail.com)
+
+## 🙏 Acknowledgments
 
 - [OpenWeatherMap](https://openweathermap.org/) for the weather API
 - [Font Awesome](https://fontawesome.com/) for the icons
 - [Google Fonts](https://fonts.google.com/) for the Poppins font
 
-*Last updated: June 2025*
+---
+
+*Last updated: July 2025*
